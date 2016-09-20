@@ -1,27 +1,33 @@
-# Laravel PHP Framework
+# Bug proof for cached field values in laracasts/behat-laravel-extension
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+This project is meant to explain the bug mentioned here: 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+https://github.com/laracasts/Behat-Laravel-Extension/issues/55
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Rough bug description
 
-## Official Documentation
+The bug affects testing mandatory form field behavior with behat scenarios.  
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+The following scenario should succeed:
+1. Visit form page
+2. Fill in form incompletely and submit
+3. See error message
+4. Switch to homepage
+5. Switch to form page
+6. Fill in the fields that were formerly missing
+7. Press submit
+8. See error message
 
-## Contributing
+When doing this manually and when you reach Step 5, you will notice that the form is empty. However, when testing this
+with behat, the form fields will be filled with the old values.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+## Setup
+* Clone the project. 
+* Run `cp .env.example .env` (copies example dotenv to `.env`)
+* Run `php artisan key:generate` (generates your application key in `.env`)
 
-## Security Vulnerabilities
+### Test
+* Run `phpunit`. The tests should succeed. This proves that laravel works as you would expect it
+* Run `vendor/bin/behat`. The tests should fail. This proves that laracasts/behat-laravel-extension caches filled in form fields even if you change the pages in between.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+If you wish to test the form behavior manually, just run `php artisan serve` and visit `localhost:8000/plain-form` in your browser.

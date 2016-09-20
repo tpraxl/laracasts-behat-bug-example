@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/plain-form', function () {
+    return view('plain-form');
+});
+
+Route::post('/update', 'FormField@update');

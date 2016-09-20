@@ -43,5 +43,6 @@ Feature: Show cached form field values to audience
 		And I fill in "email" with "jeffrey@laracasts.com"
 		And I press "Submit"
 		And I should be on "/plain-form"
-		Then I should see "The email field is required."
+		Then I should see "The first name field is required."
+		And I should see "The last name field is required."
 

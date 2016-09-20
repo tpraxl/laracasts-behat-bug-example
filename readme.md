@@ -9,6 +9,7 @@ https://github.com/laracasts/Behat-Laravel-Extension/issues/55
 The bug affects testing mandatory form field behavior with behat scenarios.  
 
 The following scenario should succeed:
+
 1. Visit form page
 2. Fill in form incompletely and submit
 3. See error message
